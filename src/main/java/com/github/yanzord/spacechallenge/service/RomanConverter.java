@@ -7,8 +7,8 @@ import java.util.List;
 
 public class RomanConverter {
 
-    private static final List<Integer> INTEGERS = Arrays.asList(1, 4, 5, 9, 10, 50, 100, 500, 1000);
-    private static final List<String> ROMANS = Arrays.asList("I", "IV", "V", "IX", "X", "L", "C", "D", "M");
+    private static final List<Integer> INTEGERS = Arrays.asList(1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000);
+    private static final List<String> ROMANS = Arrays.asList("I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM", "M");
 
     public List<String> getROMANS() {
         return ROMANS;
@@ -19,10 +19,10 @@ public class RomanConverter {
             throw new InvalidNumberException();
         }
 
-        int integerNumber = treat4and9(romanNumber);
+        int integerNumber = treatSpecials(romanNumber);
 
         if (integerNumber > 0) {
-            romanNumber = romanNumber.replaceAll("IV|IX", "");
+            romanNumber = romanNumber.replaceAll("IV|IX|XL|XC|CD|CM", "");
 
             if (romanNumber.isEmpty()) {
                 return integerNumber;
@@ -39,12 +39,24 @@ public class RomanConverter {
         return integerNumber;
     }
 
-    public int treat4and9(String romanNumber) {
+    public int treatSpecials(String romanNumber) {
         if (romanNumber.contains("IV"))
             return 4;
 
         if (romanNumber.contains("IX"))
             return 9;
+
+        if (romanNumber.contains("XL"))
+            return 40;
+
+        if (romanNumber.contains("XC"))
+            return 90;
+
+        if (romanNumber.contains("CD"))
+            return 400;
+
+        if (romanNumber.contains("CM"))
+            return 900;
 
         return 0;
     }
